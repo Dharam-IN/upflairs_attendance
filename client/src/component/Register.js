@@ -28,6 +28,28 @@ const Register = ()=>{
         })
     }
 
+    const addData = async (e)=>{
+        e.preventDefault();
+        const {fname, email, password, cpassword} = inpval;
+        if(fname === ""){
+            alert("Please enter Name")
+        }else if(email === ""){
+            alert("Please enter Email")
+        }else if(password === ""){
+            alert("Please enter Password")
+        }else if(password.length < 6){
+            alert("Atleast password length is 6 Character")
+        }else if(cpassword === ""){
+            alert("Please enter Confirm Password")
+        }else if(cpassword.length < 6){
+            alert("Atleast password length is 6 Character")
+        }else if(password !== cpassword){
+            alert("Password and Confirm password are not match")
+        }else{
+            alert("Doneee")
+        }
+    }
+
     return(
         <>
             <section>
@@ -63,7 +85,7 @@ const Register = ()=>{
                                 </div>
                             </div>
                         </div>
-                        <button className="btn">Sign Up</button>
+                        <button className="btn" onClick={addData}>Sign Up</button>
                         <p>Already Have an Account? <NavLink to='/login'>Login</NavLink></p>
                     </form>
                 </div>

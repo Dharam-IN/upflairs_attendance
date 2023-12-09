@@ -25,6 +25,17 @@ const Login = ()=>{
         })
     }
 
+    const loginCheck = async (e)=>{
+        e.preventDefault();
+        const {email, password} = inpval;
+        if(email === ""){
+            alert("Please enter Email")
+        }else if(password === ""){
+            alert("Please enter Password")
+        }else{
+            alert("Doneee")
+        }
+    }
 
 
     return(
@@ -49,7 +60,7 @@ const Login = ()=>{
                                 </div>
                             </div>
                         </div>
-                        <button className="btn">Login</button>
+                        <button className="btn" onClick={loginCheck}>Login</button>
                         <p>Don't Have an Account? <NavLink to='/register'>Register</NavLink></p>
                     </form>
                 </div>
