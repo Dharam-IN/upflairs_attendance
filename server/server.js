@@ -1,14 +1,20 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const app = express();
-require("./db/conn")
+const router = require("./routes/router");
+const cors = require("cors");
+require("./db/conn");
 
 dotenv.config({path: "../.env"})
 const PORT = process.env.PORT;
 
-app.get("/", async(req, res)=>{
-    res.send("IND")
-})
+// app.get("/", async(req, res)=>{
+//     res.send("IND")
+// })
+
+app.use(express.json())
+app.use(cors())
+app.use(router);
 
 app.listen(PORT, async(req, res)=>{
     console.log(`Server Running on Port ${PORT}`);

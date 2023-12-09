@@ -46,7 +46,19 @@ const Register = ()=>{
         }else if(password !== cpassword){
             alert("Password and Confirm password are not match")
         }else{
-            alert("Doneee")
+            // alert("Doneee")
+            const data = await fetch("http://localhost:5001/register",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    fname, email, password, cpassword
+                })
+            });
+
+            const res = await data.json;
+            console.log(res)
         }
     }
 
@@ -60,7 +72,7 @@ const Register = ()=>{
                     </div>
                     <form>
                         <div className="form_input">
-                            <label htmlFor="email">Name</label>
+                            <label htmlFor="name">Name</label>
                             <input type="name" value={inpval.fname} onChange={setval} name="fname" id="name" placeholder="Enter Your Name" />
                         </div>
                         <div className="form_input">
