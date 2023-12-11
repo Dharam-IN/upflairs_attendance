@@ -1,7 +1,7 @@
 const express = require("express");
 const userdb = require("../models/userSchema");
 const router = new express.Router();
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 
 // Register 
 router.post('/register', async(req, res)=>{
@@ -57,7 +57,20 @@ router.post("/login", async(req, res)=>{
            }else{
                 // token generated
                 const token = await userValid.generateAuthtoken();
-                console.log(token);
+                // console.log(token);
+
+                // cookie generate
+                res.cookie("usercookie", token,{
+                    expires: new Date(Date.now()+9000000),
+                    httpOnly: true
+                });
+
+                const result = {
+                    userValid,
+                    token
+                }
+
+                res.status(201).json({status:201, result})
            }
         }
     } catch (error) {

@@ -11,7 +11,7 @@ const Login = ()=>{
         password: ""
     });
     
-    console.log(inpval)
+    // console.log(inpval)
     const setval = async(e)=>{
         // console.log(e.target.value)
 
@@ -46,6 +46,12 @@ const Login = ()=>{
             })
             const res = await data.json();
             console.log(res)
+
+            // if(res.status === 201){
+            //     setinpval({
+            //         ...inpval,email:"", password:""
+            //     })
+            // }
         }
     }
 
