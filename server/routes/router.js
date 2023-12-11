@@ -15,7 +15,7 @@ router.post('/register', async(req, res)=>{
         const preuser = await userdb.findOne({email: email});
 
         if(preuser){
-            res.status(422).json({error: "Please Enter Valid Details"})
+            res.status(422).json({error: "Email already exist"})
         }else if(password !== cpassword){
             res.status(422).json({error: "Password and cpassword not match"})
         }else{
@@ -23,10 +23,16 @@ router.post('/register', async(req, res)=>{
                 fname, email, password, cpassword
             })
 
-            const storedata = await fineluser.save()
+            // hash password
+
+            const storedata = await fineluser.save();
+            // console.log(storedata)
+            res.status(201).json({status: 201, storedata})
+
         }
     } catch (error) {
-        
+        res.status(422).json(error)
+        console.log("Catch Block Error")
     }
 })
 

@@ -14,7 +14,7 @@ const Register = ()=>{
         cpassword: ""
     });
 
-    console.log(inpval)
+    // console.log(inpval)
     const setval = async(e)=>{
         // console.log(e.target.value)
 
@@ -46,7 +46,7 @@ const Register = ()=>{
         }else if(password !== cpassword){
             alert("Password and Confirm password are not match")
         }else{
-            // alert("Doneee")
+            // alert("Doneee")  
             const data = await fetch("http://localhost:5001/register",{
                 method: "POST",
                 headers: {
@@ -57,8 +57,14 @@ const Register = ()=>{
                 })
             });
 
-            const res = await data.json;
+            const res = await data.json();
             console.log(res)
+
+            if(res.status === 201){
+                setinpval({
+                    ...inpval,fname:"", email:"", password:"", cpassword:""
+                })
+            }
         }
     }
 
