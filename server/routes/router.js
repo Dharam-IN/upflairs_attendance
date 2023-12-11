@@ -1,6 +1,7 @@
 const express = require("express");
 const userdb = require("../models/userSchema");
 const router = new express.Router();
+const bcrypt = require("bcrypt")
 
 // Register 
 router.post('/register', async(req, res)=>{
@@ -34,6 +35,35 @@ router.post('/register', async(req, res)=>{
         res.status(422).json(error)
         console.log("Catch Block Error")
     }
+})
+
+// Login 
+
+router.post("/login", async(req, res)=>{
+    // console.log(req.body)
+    const{email, password} = req.body;
+
+    if(!email || !password){
+        res.status(422).json({error: "Please Fill all fields"})
+    }
+
+    try {
+        const userValid = await userdb.findOne({email: email});
+        if(userValid){
+           const isMatch = await bcrypt.compare(password, userValid.password)
+
+           if(!isMatch){
+                res.status(422).json({error: "Invalid Details"})
+           }else{
+                // token generated
+                const token = await userValid.generateAuthtoken();
+                console.log(token);
+           }
+        }
+    } catch (error) {
+        
+    }
+
 })
 
 module.exports = router;

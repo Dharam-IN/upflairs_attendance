@@ -33,7 +33,19 @@ const Login = ()=>{
         }else if(password === ""){
             alert("Please enter Password")
         }else{
-            alert("Doneee")
+            // alert("Doneee")
+
+            const data = await fetch("http://localhost:5001/login",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email, password
+                })
+            })
+            const res = await data.json();
+            console.log(res)
         }
     }
 
