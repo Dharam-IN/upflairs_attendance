@@ -104,7 +104,7 @@ const Register = ()=>{
                             </div>
                         </div>
                         <button className="btn" onClick={addData}>Sign Up</button>
-                        <p>Already Have an Account? <NavLink to='/login'>Login</NavLink></p>
+                        <p>Already Have an Account? <NavLink to='/'>Login</NavLink></p>
                     </form>
                 </div>
             </section>

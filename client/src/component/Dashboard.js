@@ -1,9 +1,47 @@
 import React, { useContext, useEffect, useState } from "react"
 import './mix.css'
+import { useNavigate } from "react-router-dom";
+import { LoginContext } from "./ContextProvider/Context";
 
 const Dashboard = ()=>{
-    const [time, setTime] = useState('');
 
+    const {logindata, setLoginData} = useContext(LoginContext)
+    // console.log(logindata.ValidUserOne.email)
+
+    const history = useNavigate();
+
+    const DashboardValid = async () => {
+        try {
+            let token = localStorage.getItem("usersdatatoken");
+            const res = await fetch("http://localhost:5001/validuser", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token,
+                },
+            });
+    
+            const data = await res.json();
+            // console.log(data);
+
+            if(data.status == 401 || !data){
+                // console.log("Error page redirect")
+                history("*")
+            }else{
+                // console.log("userverify")
+                setLoginData(data)
+                history("/dash")
+            }
+        } catch (error) {
+            console.error('Error fetching validuser:', error);
+        }
+    };
+
+    useEffect(()=>{
+        DashboardValid();
+    },[])
+
+    const [time, setTime] = useState('');
     useEffect(() => {
         function showTime() {
         const date = new Date();
@@ -39,6 +77,9 @@ const Dashboard = ()=>{
                     <div className="clock-con">
                         <div id="MyClockDisplay" className="clock">
                         {time}
+                        </div>
+                        <div className="email">
+                            <h5>{logindata.ValidUserOne.email}</h5>
                         </div>
                     </div>
                     </div>

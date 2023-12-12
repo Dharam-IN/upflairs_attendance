@@ -4,6 +4,7 @@ import Login from "./component/Login";
 import Header from "./component/Header";
 import Register from "./component/Register";
 import Dashboard from "./component/Dashboard";
+import Error from "./component/Error";
 
 
 function App() {
@@ -12,9 +13,10 @@ function App() {
       <>
       <Header/>
         <Routes>  
-          <Route path="/" element={<Dashboard/>}/>
-          <Route path="/login" element={<Login/>}/>
+          <Route path="/" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
+          <Route path="/dash" element={<Dashboard/>}/>
+          <Route path="*" element={<Error/>}/>
         </Routes>
       </>
     </Router>

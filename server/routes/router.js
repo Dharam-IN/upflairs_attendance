@@ -1,7 +1,8 @@
 const express = require("express");
 const userdb = require("../models/userSchema");
 const router = new express.Router();
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const authenticate = require("../middleware/authenticate")
 
 // Register 
 router.post('/register', async(req, res)=>{
@@ -74,9 +75,24 @@ router.post("/login", async(req, res)=>{
            }
         }
     } catch (error) {
-        
+        res.status(401).json(error);
+        console.log("Catch Block")
     }
 
-})
+});
+
+
+// user valid
+
+router.get("/validuser", authenticate, async (req, res) => {
+    try {
+        const ValidUserOne = await userdb.findOne({_id: req.userId});
+        res.status(201).json({status: 201, ValidUserOne})
+        
+    } catch (error) {
+        console.error('Error in /validuser route:', error);
+        res.status(401).json({status: 401, error})
+    }
+});
 
 module.exports = router;

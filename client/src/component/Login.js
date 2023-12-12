@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import './mix.css';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = ()=>{
+
+    const history = useNavigate();
 
     const [passshow, setpassshow] = useState(false);
 
@@ -45,13 +47,13 @@ const Login = ()=>{
                 })
             })
             const res = await data.json();
-            console.log(res)
+            // console.log(res)
 
-            // if(res.status === 201){
-            //     setinpval({
-            //         ...inpval,email:"", password:""
-            //     })
-            // }
+            if(res.status === 201){
+                localStorage.setItem("usersdatatoken", res.result.token);
+                history("/dash")
+                setinpval({ ...inpval,email:"", password:"" })
+            }
         }
     }
 
