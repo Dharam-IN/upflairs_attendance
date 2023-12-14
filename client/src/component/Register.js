@@ -61,6 +61,7 @@ const Register = ()=>{
             console.log(res)
 
             if(res.status === 201){
+                alert("Register Successful")
                 setinpval({
                     ...inpval,fname:"", email:"", password:"", cpassword:""
                 })
