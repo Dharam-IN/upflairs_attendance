@@ -70,13 +70,23 @@ const Dashboard = () => {
     }, []);
 
     const [tableRows, setTableRow] = useState([])
+    const [day, setDay] = useState(null);
+    const [times, setTimes] = useState(null);
+
 
     const handleInput = ()=>{
+        const today = new Date();
+        const options = { weekday: "long", timeZone: "Asia/Kolkata" };
+        const day = today.toLocaleDateString("en-IN", options);
+        const times = today.getTime
+
+        setDay(day);
         console.log("india")
         const newRow = {
             sn: tableRows.length + 1,
             name: logindata ? logindata.ValidUserOne.fname : "",
-            day: "New Day",
+            day: day,
+            times: time,
             absent: "No",
             present: "Yes"
         }
@@ -86,6 +96,7 @@ const Dashboard = () => {
         console.log(tableRows)
         // console.log("india 2")
     }
+
 
     return (
         <>
@@ -116,37 +127,18 @@ const Dashboard = () => {
                             <th>S.N.</th>
                             <th>Name</th>
                             <th>Days</th>
+                            <th>Time</th>
                             <th>Absent</th>
                             <th>Present</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>{logindata ? logindata.ValidUserOne.fname : ""}</td>
-                            <td>Monday</td>
-                            <td>Yes</td>
-                            <td>No</td>
-                        </tr>
-                        {/* <tr className="active-row">
-                            <td>2</td>
-                            <td>{logindata ? logindata.ValidUserOne.fname : ""}</td>
-                            <td>Tuesday</td>
-                            <td>No</td>
-                            <td>Yes</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>{logindata ? logindata.ValidUserOne.fname : ""}</td>
-                            <td>Wednesday</td>
-                            <td>No</td>
-                            <td>Yes</td>
-                        </tr> */}
                         {tableRows.map((row) => (
                             <tr key={row.sn}>
                                 <td>{row.sn}</td>
                                 <td>{row.name}</td>
                                 <td>{row.day}</td>
+                                <td>{row.times}</td>
                                 <td>{row.absent}</td>
                                 <td>{row.present}</td>
                             </tr>
