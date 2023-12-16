@@ -74,26 +74,39 @@ const Dashboard = () => {
     const [times, setTimes] = useState(null);
 
 
+    const [buttonClick, setbuttonClick] = useState(false)
     const handleInput = ()=>{
-        const today = new Date();
-        const options = { weekday: "long", timeZone: "Asia/Kolkata" };
-        const day = today.toLocaleDateString("en-IN", options);
-        const times = today.getTime
+        console.log(buttonClick)
+            if (!buttonClick) {
+                const today = new Date();
+                const options = { weekday: "long", timeZone: "Asia/Kolkata" };
+                const day = today.toLocaleDateString("en-IN", options);
+                const times = today.getTime
 
-        setDay(day);
-        console.log("india")
-        const newRow = {
-            sn: tableRows.length + 1,
-            name: logindata ? logindata.ValidUserOne.fname : "",
-            day: day,
-            times: time,
-            absent: "No",
-            present: "Yes"
-        }
-        console.log(newRow)
+                setDay(day);
+                console.log("india")
+                const newRow = {
+                    sn: tableRows.length + 1,
+                    name: logindata ? logindata.ValidUserOne.fname : "",
+                    day: day,
+                    times: time,
+                    absent: "No",
+                    present: "Yes"
+                }
+                console.log(newRow)
 
-        setTableRow((prevRows)=>[...prevRows, newRow])
-        console.log(tableRows)
+                setTableRow((prevRows)=>[...prevRows, newRow])
+                // console.log(tableRows)
+                setbuttonClick(true)
+            } else {
+                console.log("Button click only once time")
+            }
+            if(buttonClick == true){
+                alert("Click only one time")
+            }else{
+                console.log("true")
+            }
+        
         // console.log("india 2")
     }
 
