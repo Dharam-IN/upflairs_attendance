@@ -2,7 +2,8 @@ const express = require("express");
 const userdb = require("../models/userSchema");
 const router = new express.Router();
 const bcrypt = require("bcryptjs");
-const authenticate = require("../middleware/authenticate")
+const authenticate = require("../middleware/authenticate");
+const dashDB = require("../models/dashSchema");
 
 // Register 
 router.post('/register', async(req, res)=>{
@@ -38,7 +39,7 @@ router.post('/register', async(req, res)=>{
     }
 })
 
-// Login 
+// Login
 
 router.post("/login", async(req, res)=>{
     // console.log(req.body)
@@ -80,6 +81,19 @@ router.post("/login", async(req, res)=>{
     }
 
 });
+
+// Dashboard data
+router.post("/dashData", async(req, res)=>{
+    // console.log(req.body)
+    const {sn, name, day, times, absent, present} = req.body;
+
+    const fineldata = new dashDB({
+        sn, name, day, times, absent, present
+    })
+
+    const storedata1 = fineldata.save()
+    res.status(201).json({status: 201, storedata1})
+})
 
 
 // user valid

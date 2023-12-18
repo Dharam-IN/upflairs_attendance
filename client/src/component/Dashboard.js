@@ -74,10 +74,8 @@ const Dashboard = () => {
     const [times, setTimes] = useState(null);
 
 
-    const [buttonClick, setbuttonClick] = useState(false)
-    const handleInput = ()=>{
-        console.log(buttonClick)
-            if (!buttonClick) {
+    const handleInput = async (e)=>{
+                e.preventDefault();
                 const today = new Date();
                 const options = { weekday: "long", timeZone: "Asia/Kolkata" };
                 const day = today.toLocaleDateString("en-IN", options);
@@ -93,23 +91,22 @@ const Dashboard = () => {
                     absent: "No",
                     present: "Yes"
                 }
-                console.log(newRow)
+                
+                
+                // api
+                const data = await fetch("http://localhost:5001/dashData", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(newRow)
+                })
+                
+                const res = await data.json()
+                console.log(res)
 
                 setTableRow((prevRows)=>[...prevRows, newRow])
-                // console.log(tableRows)
-                setbuttonClick(true)
-            } else {
-                console.log("Button click only once time")
-            }
-            if(buttonClick == true){
-                alert("Click only one time")
-            }else{
-                console.log("true")
-            }
-        
-        // console.log("india 2")
     }
-
 
     return (
         <>
@@ -127,7 +124,7 @@ const Dashboard = () => {
                     </div>
                     <div className="col-md-6 text-end">
                         <div className="att_btns">
-                            <button className="btn btn-primary me-3" onClick={handleInput}>In</button>
+                            <button className="btn btn-primary me-3" onClick={(e) => handleInput(e)}>In</button>
                             <button className="btn btn-primary">Out</button>
                         </div>
                     </div>

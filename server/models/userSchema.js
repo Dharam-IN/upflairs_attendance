@@ -8,7 +8,7 @@ dotenv.config({path: "../.env"})
 
 const keysecret = process.env.SECRETKEY;
 
-
+// Register Schema
 const userSchema = new mongoose.Schema({
     fname:{
         type: String,
