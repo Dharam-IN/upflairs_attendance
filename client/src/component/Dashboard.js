@@ -74,39 +74,98 @@ const Dashboard = () => {
     const [times, setTimes] = useState(null);
 
 
+    const [buttonClick, setButtonClick] = useState(false)
     const handleInput = async (e)=>{
-                e.preventDefault();
-                const today = new Date();
-                const options = { weekday: "long", timeZone: "Asia/Kolkata" };
-                const day = today.toLocaleDateString("en-IN", options);
-                const times = today.getTime
+                if(!buttonClick){
+                    e.preventDefault();
+                    const today = new Date();
+                    const options = { weekday: "long", timeZone: "Asia/Kolkata" };
+                    const day = today.toLocaleDateString("en-IN", options);
+                    const times = today.getTime
 
-                setDay(day);
-                console.log("india")
-                const newRow = {
-                    sn: tableRows.length + 1,
-                    name: logindata ? logindata.ValidUserOne.fname : "",
-                    day: day,
-                    times: time,
-                    absent: "No",
-                    present: "Yes"
+                    setDay(day);
+                    console.log("india")
+                    const newRow = {
+                        sn: tableRows.length + 1,
+                        name: logindata ? logindata.ValidUserOne.fname : "",
+                        day: day,
+                        times: time,
+                        absent: "No",
+                        present: "Yes"
+                    }
+                    
+                    // api
+                    const data = await fetch("http://localhost:5001/dashData", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(newRow)
+                    })
+                    
+                    const res = await data.json()
+                    console.log(res)
+
+                    setTableRow((prevRows)=>[...prevRows, newRow])
+
+                    setButtonClick(true)
+                    // setTimeout(() => {
+                    //     alert("One time click");
+                    //     setButtonClick(false)
+                    // }, 6 * 60 * 60 * 1000);
+                    setTimeout(() => {
+                        setButtonClick(false)
+                    }, 10000); 
+                }else{
+                    alert("Click After 10 Seconds")
                 }
-                
-                
-                // api
-                const data = await fetch("http://localhost:5001/dashData", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(newRow)
-                })
-                
-                const res = await data.json()
-                console.log(res)
-
-                setTableRow((prevRows)=>[...prevRows, newRow])
     }
+
+    const handleInOutput = async (e)=>{
+        if(!buttonClick){
+            e.preventDefault();
+            const today = new Date();
+            const options = { weekday: "long", timeZone: "Asia/Kolkata" };
+            const day = today.toLocaleDateString("en-IN", options);
+            const times = today.getTime
+
+            setDay(day);
+            console.log("india")
+            const newRow = {
+                sn: tableRows.length + 1,
+                name: logindata ? logindata.ValidUserOne.fname : "",
+                day: day,
+                times: time,
+                absent: "No",
+                present: "Yes"
+            }
+            
+            // api
+            const data = await fetch("http://localhost:5001/dashOutData", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newRow)
+            })
+            
+            const res = await data.json()
+            console.log(res)
+
+            setTableRow((prevRows)=>[...prevRows, newRow])
+
+            setButtonClick(true)
+            // setTimeout(() => {
+            //     alert("One time click");
+            //     setButtonClick(false)
+            // }, 6 * 60 * 60 * 1000);
+            setTimeout(() => {
+                setButtonClick(false)
+            }, 10000); 
+        }else{
+            alert("Click After 10 Seconds")
+        }
+}
 
     return (
         <>
@@ -125,7 +184,7 @@ const Dashboard = () => {
                     <div className="col-md-6 text-end">
                         <div className="att_btns">
                             <button className="btn btn-primary me-3" onClick={(e) => handleInput(e)}>In</button>
-                            <button className="btn btn-primary">Out</button>
+                            <button className="btn btn-primary" onClick={(e) =>{handleInOutput(e)}}>Out</button>
                         </div>
                     </div>
                 </div>

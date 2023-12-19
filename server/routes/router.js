@@ -4,6 +4,7 @@ const router = new express.Router();
 const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
 const dashDB = require("../models/dashSchema");
+const dashOutDB = require("../models/dashOut");
 
 // Register 
 router.post('/register', async(req, res)=>{
@@ -95,6 +96,17 @@ router.post("/dashData", async(req, res)=>{
     res.status(201).json({status: 201, storedata1})
 })
 
+router.post("/dashOutData", async(req, res)=>{
+    // console.log(req.body)
+    const {sn, name, day, times, absent, present} = req.body;
+
+    const fineldata = new dashOutDB({
+        sn, name, day, times, absent, present
+    })
+
+    const storedata1 = fineldata.save()
+    res.status(201).json({status: 201, storedata1})
+})
 
 // user valid
 
