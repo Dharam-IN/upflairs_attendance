@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 import './mix.css'
 import { useNavigate } from "react-router-dom";
 import { LoginContext } from "./ContextProvider/Context";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
 
@@ -69,7 +71,10 @@ const Dashboard = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    const [tableRows, setTableRow] = useState([])
+    const [tableRows, setTableRow] = useState(()=>{
+        const storedRows = localStorage.getItem("tableRows");
+        return storedRows ? JSON.parse(storedRows) : [];
+    })
     const [day, setDay] = useState(null);
     const [times, setTimes] = useState(null);
 
@@ -106,7 +111,23 @@ const Dashboard = () => {
                     const res = await data.json()
                     console.log(res)
 
-                    setTableRow((prevRows)=>[...prevRows, newRow])
+                    setTableRow((prevRows) => {
+                        const updatedRows = [...prevRows, newRow];
+                        // Save the updated rows to localStorage
+                        localStorage.setItem("tableRows", JSON.stringify(updatedRows));
+                        return updatedRows;
+                    });
+
+                    toast.success("Your IN Entry Added!", {
+                        position: "top-center",
+                        autoClose: 3000, // 3 seconds
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                    });
+
+                    setDisableClass("in");
 
                     setButtonClick(true)
                     // setTimeout(() => {
@@ -117,9 +138,18 @@ const Dashboard = () => {
                         setButtonClick(false)
                     }, 10000); 
                 }else{
-                    alert("Click After 10 Seconds")
+                    toast.error("Click After 10 Seconds!", {
+                        position: "top-center",
+                        autoClose: 3000, // 3 seconds
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                    });
                 }
     }
+
+    const [disableClass, setDisableClass] = useState(null)
 
     const handleInOutput = async (e)=>{
         if(!buttonClick){
@@ -130,7 +160,6 @@ const Dashboard = () => {
             const times = today.getTime
 
             setDay(day);
-            console.log("india")
             const newRow = {
                 sn: tableRows.length + 1,
                 name: logindata ? logindata.ValidUserOne.fname : "",
@@ -152,7 +181,22 @@ const Dashboard = () => {
             const res = await data.json()
             console.log(res)
 
-            setTableRow((prevRows)=>[...prevRows, newRow])
+            setTableRow((prevRows) => {
+                const updatedRows = [...prevRows, newRow];
+                // Save the updated rows to localStorage
+                localStorage.setItem("tableRows", JSON.stringify(updatedRows));
+                return updatedRows;
+            });
+
+            toast.success("Your Out Entry Added!", {
+                position: "top-center",
+                autoClose: 3000, // 3 seconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            setDisableClass("out");
 
             setButtonClick(true)
             // setTimeout(() => {
@@ -163,12 +207,20 @@ const Dashboard = () => {
                 setButtonClick(false)
             }, 10000); 
         }else{
-            alert("Click After 10 Seconds")
+            toast.error("Click After 10 Seconds!", {
+                position: "top-center",
+                autoClose: 3000, // 3 seconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         }
 }
 
     return (
         <>
+        <ToastContainer />
             <nav className='container'>
                 <div className="row my-3">
                     <div className="col-md-6">
@@ -176,15 +228,15 @@ const Dashboard = () => {
                             <div id="MyClockDisplay" className="clock">
                                 {time}
                             </div>
-                            <div className="email">
+                            {/* <div className="email">
                                 <h5>{logindata ? logindata.ValidUserOne.email : ""}</h5>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="col-md-6 text-end">
                         <div className="att_btns">
-                            <button className="btn btn-primary me-3" onClick={(e) => handleInput(e)}>In</button>
-                            <button className="btn btn-primary" onClick={(e) =>{handleInOutput(e)}}>Out</button>
+                            <button className={`btn btn-primary me-3 ${disableClass === "in"? "disabled" : ""}`} onClick={(e) => handleInput(e)}>In</button>
+                            <button className={`btn btn-primary me-3 ${disableClass === "out"? "disabled" : ""}`} onClick={(e) =>{handleInOutput(e)}}>Out</button>
                         </div>
                     </div>
                 </div>
@@ -195,7 +247,7 @@ const Dashboard = () => {
                         <tr>
                             <th>S.N.</th>
                             <th>Name</th>
-                            <th>Days</th>
+                            <th>Day</th>
                             <th>Time</th>
                             <th>Absent</th>
                             <th>Present</th>
